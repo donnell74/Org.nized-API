@@ -4,7 +4,7 @@ a [Sails](http://sailsjs.org) api for the aitp applicaitons
 
 functions:
 
-InsertPerson
+Person/InsertPerson
 Given the query data for a person row, insert into person table given person does not exist.  If the query data contains a first name and last name that exist in the database but has a different email, will return error PossibleDuplicatePerson and query data (with the old email and new email).  Developer's can then call ForceUpdate with same data.
 
 Person/CheckIfUserExist/<email/cardID>
@@ -16,8 +16,8 @@ Given an email or cardID, check if user has been checked in today.
 DeletePerson
 Given an email or cardID, remove Person row from database
 
-UpdateEmail
-Given the first name, last name, old email, and new email, update the old email with the new email of the person and any rows in CardIDToEmail where email equals old email.
+Person/UpdateEmail
+Given the first name, last name, old email, and new email in the post data, update the old email with the new email of the person and any rows in CardIDToEmail where email equals old email.
 
 Person/GetFirstPerson/<email/cardID>
 Given an email or cardID, return the first Person row

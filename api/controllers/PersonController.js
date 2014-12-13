@@ -72,6 +72,53 @@ module.exports = {
       }
     });
   }, 
+  UpdateEmail: function (req, res) {
+    var values = req.allParams();
+    
+    // Don't allow these values
+    if ( "new_email" in values )
+    {
+      var allowed = {email: values.new_email};
+    }
+    else
+    {
+      return res.send(500, { error: "There is no new email field" } );
+    }
+
+    var search_values = {};
+
+    var quit = false;
+    ["old_email", "first_name", "last_name"].forEach(function(element) {
+      if (element in values)
+      {
+        if (element != "old_email")
+        {
+          search_values[element] = values[element];
+        }
+        else
+        {
+          search_values["email"] = values[element];
+        }
+      }
+      else
+      {
+        quit = true;
+      }
+    });
+
+    if (quit)
+    {
+      return res.send(500, { error: "Values needed were not given" } );
+    }
+
+    Person.update(search_values).set(allowed).then( function (newProduct) {
+      CardIDToEmail.update({email: search_values.email})
+                   .set(allowed).then( function( newProduct ) {
+      });
+
+      return res.send(newProduct);
+    });
+  }, 
   _GetFirstPerson: _GetFirstPerson,
 };
 
