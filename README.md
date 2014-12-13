@@ -22,8 +22,8 @@ Given the first name, last name, old email, and new email, update the old email 
 Person/GetFirstPerson/<email/cardID>
 Given an email or cardID, return the first Person row
 
-GetClassBonusesByPerson
-Given an email or cardID, return list of Course Codes associated with the person who matches the email/cardID
+Person/GetClassBonusesByPerson/<email/cardID>
+Given an email or cardID, return list of Course Codes associated with the person who matches the email/cardID.
 
 CheckIns/GetCheckInsByDate/<mm-dd-yyyy>
 Given a date, return list of persons with a datechecked of that day.
