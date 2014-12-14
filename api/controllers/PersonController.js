@@ -167,6 +167,21 @@ module.exports = {
       return res.send(400, { error: "Email not given" } );
     }
   }, 
+  DeletePerson: function (req, res) {
+    _GetFirstPerson(req.params.id, function (result) {
+      if (reval == null)
+      {
+        return res.send(400, { error: "Could not find user" } );
+      }
+    
+      Person.destroy({email: result.email}).exec(function (err) {
+        CardIDToEmail.destroy({email: result.email}).exec( function (err) {
+            console.log("Email " + result.email + " has been deleted.");
+            return res.send(result);
+        });
+      });
+    });
+  }, 
   _GetFirstPerson: _GetFirstPerson,
 };
 
