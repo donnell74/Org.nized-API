@@ -4,7 +4,7 @@ a [Sails](http://sailsjs.org) api for the aitp applicaitons
 
 functions:
 
-InsertPerson
+Person/InsertPerson
 Given the query data for a person row, insert into person table given person does not exist.  If the query data contains a first name and last name that exist in the database but has a different email, will return error PossibleDuplicatePerson and query data (with the old email and new email).  Developer's can then call Update with same data.
 
 Person/CheckIfUserExist/<email/cardID>
