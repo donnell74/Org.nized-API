@@ -13,7 +13,8 @@ module.exports = {
       type: "string",
       primaryKey: true,
       required: true,
-      email: true
+      email: true,
+      unique: true
     },
     first_name:
     {

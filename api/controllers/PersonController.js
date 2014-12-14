@@ -35,6 +35,28 @@ function _GetFirstPerson(id, cb) {
   });
 }
 
+function get_search_values(values, search_attr)
+{
+    var search_values = {quit: false};
+    search_attr.forEach(function(element) {
+      if (element in values)
+      {
+        if (element != "old_email")
+        {
+          search_values[element] = values[element];
+        }
+        else
+        {
+          search_values["email"] = values[element];
+        }
+      }
+      else
+      {
+        quit = true;
+      }
+    });
+}
+
 module.exports = {
   CheckIfUserExist: function (req, res) {
     _GetFirstPerson(req.params.id, function (result) { 
@@ -82,33 +104,18 @@ module.exports = {
     }
     else
     {
-      return res.send(500, { error: "There is no new email field" } );
+      return res.send(400, { error: "There is no new email field" } );
     }
 
-    var search_values = {};
+    search_values = get_search_values(values, ["old_email", "first_name", "last_name"]);
 
-    var quit = false;
-    ["old_email", "first_name", "last_name"].forEach(function(element) {
-      if (element in values)
-      {
-        if (element != "old_email")
-        {
-          search_values[element] = values[element];
-        }
-        else
-        {
-          search_values["email"] = values[element];
-        }
-      }
-      else
-      {
-        quit = true;
-      }
-    });
-
-    if (quit)
+    if (search_values.quit)
     {
-      return res.send(500, { error: "Values needed were not given" } );
+      return res.send(400, { error: "Values needed were not given" } );
+    }
+    else
+    {
+      delete search_values.quit;
     }
 
     Person.update(search_values).set(allowed).then( function (newProduct) {
@@ -118,6 +125,47 @@ module.exports = {
 
       return res.send(newProduct);
     });
+  }, 
+  InsertPerson: function (req, res) {
+    var values = req.allParams();
+    delete values.id;
+ 
+    if ("email" in values)
+    {
+      if (! "first_name" in values)
+      {
+        return res.send(400, { error: "First name not given" } );
+      }
+
+      if (! "last_name" in values)
+      {
+        return res.send(400, {error: "Last name not given" } );
+      }
+
+      var search_query = {first_name: values.first_name, last_name: values.last_name}; 
+
+      Person.find({ where: search_query }).exec(function (err, persons) {
+        if ( persons.length == 0 )
+        {
+          Person.create(values).exec(function (err, newPerson) {
+            return res.send(newPerson); 
+          });
+        }
+        else
+        {
+          // Make the update query for the user
+          values.old_email = persons[0].email;
+          values.new_email = values.email;
+          delete values.email;
+
+          return res.send(409, { error: "PossibleDuplicatePerson", query: values } )
+        }
+      });
+    }
+    else
+    {
+      return res.send(400, { error: "Email not given" } );
+    }
   }, 
   _GetFirstPerson: _GetFirstPerson,
 };
