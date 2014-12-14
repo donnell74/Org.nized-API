@@ -55,6 +55,11 @@ module.exports = {
       type: "string",
       enum: ["freshman", "sophomore", "junior", "senior"]
     },
+    last_sync_date:
+    {
+      type: "date",
+      defaultsTo: null
+    }, 
     checkins:
     {
       collection: 'checkins',
