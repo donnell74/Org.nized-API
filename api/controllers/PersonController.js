@@ -4,8 +4,80 @@
  * @description :: Server-side logic for managing people
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+function _PopulateCheckins(reval, nexts) {
+  // add checkins
+  reval._checkins = [];
+  reval.checkins.forEach(function(element) {
+    reval._checkins.push(element.date_scanned);
+  });
+
+  next = nexts.pop();
+  next(reval, nexts);
+}
+
+
+function _PopulateClassBonuses(reval, nexts)
+{
+  // add class_bonuses
+  reval._class_bonuses = [];
+  var counter = 0;
+  reval.class_bonuses.forEach(function (element) {
+    ClassBonus.find({where: {id: element.class_bonus_id}}).exec(function (err, bonus) {
+      if ( bonus.length != 0 ) 
+      {
+        delete bonus[0].id;
+        delete bonus[0].createdAt;
+        delete bonus[0].updatedAt;
+        reval._class_bonuses.push(bonus[0]);
+      }
+    
+      counter += 1;
+      if ( counter == reval.class_bonuses.length )
+      {
+        next = nexts.pop();
+        next(reval, nexts);
+      }
+    });
+  });
+
+}
+
+
+function _PopulateRoles(reval, nexts)
+{
+  reval._roles = [];
+  var counter = 0;
+  reval.roles.forEach(function (element) {
+    Roles.find({where: {id: element.role_id}}).exec(function (err, role) {
+      if (role.length != 0)
+      {
+        reval._roles.push(role[0].name);
+      }
+    
+      counter += 1;
+      if (counter == reval.roles.length)
+      {
+        next = nexts.pop();
+        next(reval, nexts);
+      }
+    });
+  });
+}
+
+
+function _PopulateExtras(reval, cb)
+{
+  // cb must be first element
+  func_chain = [cb,
+                _PopulateClassBonuses,
+                _PopulateRoles];
+
+  _PopulateCheckins(reval, func_chain); 
+}
+
+
 function _GetFirstPerson(id, cb) {
-  Person.find({ email: id }).populate('checkins').populate('class_bonuses')
+  Person.find({ email: id }).populateAll()
         .exec(function(err, persons){
     reval = null;
     if (persons.length == 0)
@@ -13,14 +85,14 @@ function _GetFirstPerson(id, cb) {
       CardIDToEmail.find({ card_id: id }).exec(function(err, result) {
         if (result.length != 0)
         {
-          Person.find({ email: result[0].email }).populate('checkins').populate('class_bonuses')
+          Person.find({ email: result[0].email }).populateAll()
                 .exec( function(err, card_persons) {
             if (card_persons.length != 0)
             {
               reval = card_persons[0];
             } 
 
-            cb(reval);
+            _PopulateExtras(reval, cb);
           });
         }
         else
@@ -30,7 +102,7 @@ function _GetFirstPerson(id, cb) {
       });
     } else {
       reval = persons[0];
-      cb(reval);
+      _PopulateExtras(reval, cb);
     }
   });
 }
@@ -181,7 +253,7 @@ module.exports = {
         });
       });
     });
-  }, 
+  },
   _GetFirstPerson: _GetFirstPerson,
 };
 

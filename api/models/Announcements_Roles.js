@@ -1,5 +1,5 @@
 /**
-* ClassBonus.js
+* Announcements_Roles.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -8,24 +8,18 @@
 module.exports = {
 
   attributes: {
-    id:
+    announcement_id:
     {
       type: "integer",
       primaryKey: true,
-      collection: "person_classbonus",
-      via: "class_bonus_id",
-      unique: true,
-      autoIncrement: true
-    }, 
-    course_code:
+      required: true,
+      model: 'announcements'
+    },
+    role_id:
     {
-      type: "string",
-      required: true
-    }, 
-    semester:
-    {
-      type: "string",
-      required: true
+      type: "integer",
+      required: true,
+      model: 'roles'
     }
   }
 };

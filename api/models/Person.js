@@ -64,7 +64,12 @@ module.exports = {
     {
       collection: 'person_classbonus',
       via: 'email'
-    }
+    },
+    roles:
+    {
+      collection: 'person_role',
+      via: 'email'
+    }, 
   }
 };
 
