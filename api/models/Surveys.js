@@ -1,5 +1,5 @@
 /**
-* Announcements.js
+* Surveys.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -20,12 +20,7 @@ module.exports = {
       type: "string",
       defaultsTo: "Unknown",
     },
-    title:
-    {
-      type: "string",
-      defaultsTo: "Please add text"
-    },
-    text:
+    name:
     {
       type: "string",
       defaultsTo: "Please add text"
@@ -40,11 +35,16 @@ module.exports = {
       type: "date",
       defaultsTo: new Date()
     }, 
+    questions:
+    {
+      collection: "questions",
+      via: "survey_id"
+    }, 
     roles:
     {
-      collection: "announcements_roles",
-      via: "announcement_id"
-    }, 
+      collection: "surveys_roles",
+      via: "survey_id"
+    }
   }
 };
 

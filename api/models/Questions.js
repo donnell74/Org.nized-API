@@ -1,5 +1,5 @@
 /**
-* Announcements.js
+* Questions.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -15,35 +15,31 @@ module.exports = {
       unique: true,
       autoIncrement: true
     },
-    creator:
+    survey_id:
+    {
+      type: "integer",
+      required: true,
+      model: "surveys"
+    },
+    question_text:
     {
       type: "string",
-      defaultsTo: "Unknown",
+      required: true,
     },
-    title:
+    type:
     {
-      type: "string",
-      defaultsTo: "Please add text"
-    },
-    text:
-    {
-      type: "string",
-      defaultsTo: "Please add text"
-    },
-    start_date:
-    {
-      type: "date",
-      defaultsTo: new Date()
+      enum: ["text", "checkbox", "radio"], 
+      required: true
     }, 
-    end_date:
+    possible_answers:
     {
-      type: "date",
-      defaultsTo: new Date()
-    }, 
+      collection: "possibleanswers",
+      via: "question_id"
+    },
     roles:
     {
-      collection: "announcements_roles",
-      via: "announcement_id"
+      collection: "questions_roles",
+      via: "question_id", 
     }, 
   }
 };

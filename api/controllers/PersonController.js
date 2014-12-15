@@ -4,78 +4,6 @@
  * @description :: Server-side logic for managing people
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-function _PopulateCheckins(reval, nexts) {
-  // add checkins
-  reval._checkins = [];
-  reval.checkins.forEach(function(element) {
-    reval._checkins.push(element.date_scanned);
-  });
-
-  next = nexts.pop();
-  next(reval, nexts);
-}
-
-
-function _PopulateClassBonuses(reval, nexts)
-{
-  // add class_bonuses
-  reval._class_bonuses = [];
-  var counter = 0;
-  reval.class_bonuses.forEach(function (element) {
-    ClassBonus.find({where: {id: element.class_bonus_id}}).exec(function (err, bonus) {
-      if ( bonus.length != 0 ) 
-      {
-        delete bonus[0].id;
-        delete bonus[0].createdAt;
-        delete bonus[0].updatedAt;
-        reval._class_bonuses.push(bonus[0]);
-      }
-    
-      counter += 1;
-      if ( counter == reval.class_bonuses.length )
-      {
-        next = nexts.pop();
-        next(reval, nexts);
-      }
-    });
-  });
-
-}
-
-
-function _PopulateRoles(reval, nexts)
-{
-  reval._roles = [];
-  var counter = 0;
-  reval.roles.forEach(function (element) {
-    Roles.find({where: {id: element.role_id}}).exec(function (err, role) {
-      if (role.length != 0)
-      {
-        reval._roles.push(role[0].name);
-      }
-    
-      counter += 1;
-      if (counter == reval.roles.length)
-      {
-        next = nexts.pop();
-        next(reval, nexts);
-      }
-    });
-  });
-}
-
-
-function _PopulateExtras(reval, cb)
-{
-  // cb must be first element
-  func_chain = [cb,
-                _PopulateClassBonuses,
-                _PopulateRoles];
-
-  _PopulateCheckins(reval, func_chain); 
-}
-
-
 function _GetFirstPerson(id, cb) {
   Person.find({ email: id }).populateAll()
         .exec(function(err, persons){
@@ -87,12 +15,16 @@ function _GetFirstPerson(id, cb) {
         {
           Person.find({ email: result[0].email }).populateAll()
                 .exec( function(err, card_persons) {
+            console.log(card_persons);
             if (card_persons.length != 0)
             {
               reval = card_persons[0];
+              PopulateExtras.PopulateAll(reval, cb);
             } 
-
-            _PopulateExtras(reval, cb);
+            else
+            {
+              cb(reval);
+            }
           });
         }
         else
@@ -102,7 +34,7 @@ function _GetFirstPerson(id, cb) {
       });
     } else {
       reval = persons[0];
-      _PopulateExtras(reval, cb);
+      PopulateExtras.PopulateAll(reval, cb);
     }
   });
 }
@@ -128,6 +60,48 @@ function get_search_values(values, search_attr)
       }
     });
 }
+
+function login (req, res) {
+  var bcrypt = require('bcrypt');
+
+  Person.findOneByEmail(req.body.email).exec(function (err, person) {
+    if (err)
+    {
+      return res.send(500, { error: "Database error for login" });
+    }
+
+    if (person)
+    {
+      bcrypt.compare(req.body.password, person.password, function (err, match) {
+          if (err)
+          {
+            res.send(500);
+          }
+        
+          if (match)
+          {
+            req.session.person = person.id;
+            delete person.password;
+            res.send(person);
+          }
+          else
+          {
+            if (req.session.person)
+            {
+              req.session.person = null;
+            }
+
+            res.send(400, { error: "Invalid password" });
+          }
+      });
+    }
+    else
+    {
+      res.send(404, { error: "Person not found" });
+    }
+
+  });
+};
 
 module.exports = {
   CheckIfUserExist: function (req, res) {
@@ -254,6 +228,14 @@ module.exports = {
       });
     });
   },
+  findWithExtras: function (req, res) {
+    Person.find(req.params.id).populateAll().exec(function (err, rows) {
+      PopulateExtras.PopulateAll(rows, function ( result ) {
+        res.send(result);
+      });        
+    });
+  }, 
   _GetFirstPerson: _GetFirstPerson,
+  login: login
 };
 
