@@ -64,3 +64,15 @@ Given the query data through POST for a person row, update the database where em
 
 Person/Login/
 Given the hash and email, attempt to login.
+
+Person/findWithExtras/<email/cardID>
+Same as find but populates nested associations
+
+Surveys/findWithExtras/<email/cardID>
+Same as find but populates nested associations
+
+Questions/findWithExtras/<email/cardID>
+Same as find but populates nested associations
+
+Announcements/findWithExtras/<email/cardID>
+Same as find but populates nested associations
