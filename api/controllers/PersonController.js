@@ -19,6 +19,7 @@ function _GetFirstPerson(id, cb) {
             if (card_persons.length != 0)
             {
               reval = card_persons[0];
+              delete reval.password;
               PopulateExtras.PopulateAll(reval, cb);
             } 
             else
@@ -34,6 +35,7 @@ function _GetFirstPerson(id, cb) {
       });
     } else {
       reval = persons[0];
+      delete reval.password;
       PopulateExtras.PopulateAll(reval, cb);
     }
   });
@@ -72,28 +74,20 @@ function login (req, res) {
 
     if (person)
     {
-      bcrypt.compare(req.body.password, person.password, function (err, match) {
-          if (err)
-          {
-            res.send(500);
-          }
-        
-          if (match)
-          {
-            req.session.person = person.id;
-            delete person.password;
-            res.send(person);
-          }
-          else
-          {
-            if (req.session.person)
-            {
-              req.session.person = null;
-            }
+      if ( req.body.password == person.password ) {
+        req.session.person = person.id;
+        delete person.password;
+        res.send(person);
+      }
+      else
+      {
+        if (req.session.person)
+        {
+          req.session.person = null;
+        }
 
-            res.send(400, { error: "Invalid password" });
-          }
-      });
+        res.send(400, { error: "Invalid password" });
+      }
     }
     else
     {
