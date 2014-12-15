@@ -2,6 +2,25 @@
 
 a [Sails](http://sailsjs.org) api for the aitp applicaitons
 
+Models:
+
+Announcements  
+Announcements_Roles  
+Answers  
+CardIDToEmail  
+CheckIns  
+ClassBonus  
+Notes  
+Person  
+Person_ClassBonus  
+Person_Role  
+PossibleAnswers  
+Questions  
+Questions_Roles  
+Roles  
+Surveys  
+Surveys_Roles  
+
 functions:
 
 Person/InsertPerson
@@ -13,7 +32,7 @@ Given an email or cardID, return true if an entry exists in Person table associa
 CheckIns/CheckIfUserCheckedInToday/<email/cardID>
 Given an email or cardID, check if user has been checked in today.
 
-DeletePerson
+Person/DeletePerson
 Given an email or cardID, remove Person row from database
 
 Person/UpdateEmail
@@ -43,3 +62,5 @@ Given the CardID, returns the email associated with that cardID.
 Person/Update/
 Given the query data through POST for a person row, update the database where email matches given email.  CardID will not work for this.
 
+Person/Login/
+Given the hash and email, attempt to login.
