@@ -64,6 +64,9 @@ Given the query data through POST for a person row, update the database where em
 
 Person/Login/
 Given the hash and email, attempt to login.
+ 
+Person/resetPassword/
+Given an email, reset the person associated's password
 
 Person/findWithExtras/<email/cardID>
 Same as find but populates nested associations

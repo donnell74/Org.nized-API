@@ -4,6 +4,8 @@
  * @description :: Server-side logic for managing people
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+var bcrypt = require('bcrypt');
+
 function _GetFirstPerson(id, cb) {
   Person.find({ email: id }).populateAll()
         .exec(function(err, persons){
@@ -64,7 +66,6 @@ function get_search_values(values, search_attr)
 }
 
 function login (req, res) {
-  var bcrypt = require('bcrypt');
 
   Person.findOneByEmail(req.body.email).exec(function (err, person) {
     if (err)
@@ -230,6 +231,33 @@ module.exports = {
     });
   }, 
   _GetFirstPerson: _GetFirstPerson,
-  login: login
+  login: login,
+  resetPassword: function (req, res) {
+    bcrypt.genSalt(10, function(err, salt) {
+      if (err) 
+      {
+        res.send(500, err);
+      }
+
+      bcrypt.hash("AITP", salt, function(err, hash) {
+        if (err) 
+        {
+          res.send(500, err);
+        }
+        
+        Person.update({email: req.params.id}).set({password: hash}).exec(function (err, newPerson) {
+          if (err)
+          {
+            res.send(500, err);
+          }
+          else
+          {
+            res.send(newPerson);
+          }
+        });
+      });
+
+    });
+  }, 
 };
 
