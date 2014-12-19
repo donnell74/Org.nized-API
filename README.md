@@ -4,23 +4,100 @@ a [Sails](http://sailsjs.org) api for the aitp applicaitons
 
 Models:
 
-Announcements  
-Announcements_Roles  
-Answers  
-CardIDToEmail  
-CheckIns  
-ClassBonus  
-Notes  
-Person  
-Person_ClassBonus  
-Person_Role  
-PossibleAnswers  
-Questions  
-Questions_Roles  
-Roles  
-Surveys  
-Surveys_Roles  
+##Announcements
+id  
+creator  
+title  
+text  
+start_date  
+end_date  
+roles (populated)  
+  
+##Announcements_Roles
+announcement_id  
+role_id  
+  
+##Answers  
+question_id  
+text  
+  
+##CardIDToEmail  
+card_id  
+email  
+  
+##CheckIns  
+email  
+date_scanned  
+  
+##ClassBonus  
+id  
+course_code  
+semester  
+  
+##Notes  
+id  
+person_email  
+public_to_person  
+title  
+text  
+  
+##Person_Role 
+email  
+role_id  
 
+##Person_ClassBonus  
+email  
+class_bonus_id  
+
+##Person  
+email  
+password  
+first_name  
+last_name  
+expire_date  
+mobile_number  
+is_local_paid  
+is_member  
+class_year  
+last_sync_date  
+checkins (populated)  
+class_bonuses (populated)  
+roles (populated)  
+
+##PossibleAnswers  
+id  
+question_id  
+text  
+
+##Questions  
+id  
+survey_id  
+question_text  
+type  
+possible_answers  
+roles  
+  
+##Questions_Roles  
+question_id  
+role_id  
+  
+##Roles  
+id  
+name  
+  
+##Surveys  
+id  
+creator  
+name  
+start_date  
+end_date  
+questions (populated)  
+roles (populated)  
+  
+##Surveys_Roles  
+survey_id  
+role_id  
+  
 functions:
 
 Person/InsertPerson
