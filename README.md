@@ -17,39 +17,39 @@ roles (populated)
 announcement_id  
 role_id  
   
-##Answers  
+##Answers
 question_id  
 text  
   
-##CardIDToEmail  
+##CardIDToEmail
 card_id  
 email  
   
-##CheckIns  
+##CheckIns
 email  
 date_scanned  
   
-##ClassBonus  
+##ClassBonus
 id  
 course_code  
 semester  
   
-##Notes  
+##Notes
 id  
 person_email  
 public_to_person  
 title  
 text  
   
-##Person_Role 
+##Person_Role
 email  
 role_id  
 
-##Person_ClassBonus  
+##Person_ClassBonus
 email  
 class_bonus_id  
 
-##Person  
+##Person
 email  
 password  
 first_name  
@@ -64,12 +64,12 @@ checkins (populated)
 class_bonuses (populated)  
 roles (populated)  
 
-##PossibleAnswers  
+##PossibleAnswers
 id  
 question_id  
 text  
 
-##Questions  
+##Questions
 id  
 survey_id  
 question_text  
@@ -77,15 +77,15 @@ type
 possible_answers  
 roles  
   
-##Questions_Roles  
+##Questions_Roles
 question_id  
 role_id  
   
-##Roles  
+##Roles
 id  
 name  
   
-##Surveys  
+##Surveys
 id  
 creator  
 name  
@@ -94,9 +94,10 @@ end_date
 questions (populated)  
 roles (populated)  
   
-##Surveys_Roles  
+##Surveys_Roles
 survey_id  
 role_id  
+  
   
 functions:
 
