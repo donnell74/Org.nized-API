@@ -30,7 +30,7 @@ roles (populated announcements_roles)
 date_scanned (date)  
   
 ##ClassBonus
-*id (integer)  
+id (integer)  
 *course_code (string)  
 *semester (string)  
   
