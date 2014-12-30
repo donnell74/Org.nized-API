@@ -51,18 +51,18 @@ class_bonus_id
 
 ##Person
 *email (string)  
-*password (string)
-*first_name (string)
-*last_name (string)
-expire_date (date)
-mobile_number (string)
-is_local_paid (boolean)
-is_member (boolean)
-class_year (string, ["freshman", "sophomore", "junior", "senior"])
-last_sync_date (date)
-checkins (populated checkins)  
-class_bonuses (populated person_classbonus)  
-roles (populated person_role)  
+*password (string)  
+*first_name (string)  
+*last_name (string)  
+expire_date (date)  
+mobile_number (string)  
+is_local_paid (boolean)  
+is_member (boolean)  
+class_year (string, ["freshman", "sophomore", "junior", "senior"])  
+last_sync_date (date)  
+checkins (populated checkins)    
+class_bonuses (populated person_classbonus)    
+roles (populated person_role) 
 
 ##PossibleAnswers
 id  
