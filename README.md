@@ -5,49 +5,49 @@ a [Sails](http://sailsjs.org) api for the aitp applicaitons
 Models:
 
 ##Announcements
-id  
-creator  
-title  
-text  
-start_date  
-end_date  
-roles (populated)  
+id (integer)  
+creator (string)  
+title (string)  
+text (string)   
+start_date (date)  
+end_date (date)  
+roles (populated announcements_roles)  
   
 ##Announcements_Roles
-announcement_id  
-role_id  
+*announcement_id (integer)  
+*role_id (integer)  
   
 ##Answers
-question_id  
-text  
+*question_id (integer)  
+*text (string)  
   
 ##CardIDToEmail
-card_id  
-email  
+*card_id (string)  
+*email (string)  
   
 ##CheckIns
-email  
-date_scanned  
+*email (string)  
+date_scanned (date)  
   
 ##ClassBonus
-id  
-course_code  
-semester  
+*id (integer)  
+*course_code (string)  
+*semester (string)  
   
 ##Notes
-id  
-person_email  
-public_to_person  
-title  
-text  
+id (integer)  
+*person_email (string)  
+public_to_person (boolean)  
+title (string)  
+text (string)  
   
 ##Person_Role
-email  
-role_id  
+*email (string)  
+*role_id (integer)  
 
 ##Person_ClassBonus
-email  
-class_bonus_id  
+*email (string)  
+*class_bonus_id (integer)  
 
 ##Person
 *email (string)  
@@ -65,38 +65,38 @@ class_bonuses (populated person_classbonus)
 roles (populated person_role) 
 
 ##PossibleAnswers
-id  
-question_id  
-text  
+*id (integer)  
+*question_id (integer) 
+text (string)  
 
 ##Questions
-id  
-survey_id  
-question_text  
-type  
-possible_answers  
-roles  
+id (integer)  
+*survey_id (string)  
+*question_text (string)  
+*type (string ["text", "checkbox", "radio"])  
+possible_answers (populated possibleanswers)  
+roles (populated question_roles)  
   
 ##Questions_Roles
-question_id  
-role_id  
+*question_id (integer)  
+*role_id (integer)  
   
 ##Roles
-id  
-name  
+*id (integer)  
+*name (string)  
   
 ##Surveys
-id  
-creator  
-name  
-start_date  
-end_date  
-questions (populated)  
-roles (populated)  
+id (integer)  
+creator (string)  
+name (string)  
+start_date (date)  
+end_date (date)  
+questions (populated questions)  
+roles (populated surveys_roles)  
   
 ##Surveys_Roles
-survey_id  
-role_id  
+*survey_id (integer)  
+*role_id (integer)  
   
   
 functions:
