@@ -7,12 +7,12 @@
 
 module.exports = {
 
-  attributes: {
-    announcement_id:
-    {
-      type: "integer",
-      primaryKey: true,
-      required: true,
+attributes: {
+announcement_id:
+{
+type: "integer",
+primaryKey: true,
+required: true,
       model: 'announcements'
     },
     role_id:

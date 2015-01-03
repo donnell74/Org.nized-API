@@ -43,13 +43,13 @@ module.exports = {
     },
     is_local_paid:
     {
-      type: "boolean",
-      defaultsTo: false 
+      type: "string",
+      defaultsTo: false,
+      enum: ["TRUE", "FALSE", "PENDING"], 
     },
     is_member:
     {
-      type: "string",
-      enum: ["true", "false", "pending"], 
+      type: "boolean",
       defaultsTo: false
     },
     major:
@@ -59,7 +59,7 @@ module.exports = {
     class_year:
     {
       type: "string",
-      enum: ["freshman", "sophomore", "junior", "senior"]
+      enum: ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR"]
     },
     last_sync_date:
     {
