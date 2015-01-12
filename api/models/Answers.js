@@ -12,7 +12,6 @@ module.exports = {
     {
       type: "integer",
       required: "true",
-      model: "questions"
     },
     text:
     {

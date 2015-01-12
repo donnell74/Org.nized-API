@@ -8,9 +8,15 @@
 module.exports = {
 
   attributes: {
+    id:
+    {
+      type: "integer",
+      primaryKey: true,
+      unique: true,
+      autoIncrement: true
+    },
     email:
     {
-      model: 'person',
       type: 'string',
       required: true,
       primaryKey: true,

@@ -44,7 +44,7 @@ module.exports = {
     is_local_paid:
     {
       type: "string",
-      defaultsTo: false,
+      defaultsTo: "FALSE",
       enum: ["TRUE", "FALSE", "PENDING"], 
     },
     is_member:

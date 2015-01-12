@@ -12,10 +12,8 @@ module.exports = {
     {
       type: "integer",
       primaryKey: true,
-      collection: "person_classbonus",
-      via: "class_bonus_id",
       unique: true,
-      autoIncrement: true
+      autoIncrement: true,
     }, 
     course_code:
     {

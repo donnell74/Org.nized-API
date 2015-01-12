@@ -19,7 +19,6 @@ module.exports = {
     {
       type: "integer",
       required: true,
-      model: "surveys"
     },
     question_text:
     {
@@ -28,7 +27,7 @@ module.exports = {
     },
     type:
     {
-      enum: ["text", "checkbox", "radio"], 
+      enum: ["TEXT", "CHECKBOX", "RADIO"], 
       required: true
     }, 
     possible_answers:

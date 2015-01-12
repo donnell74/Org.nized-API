@@ -14,13 +14,12 @@ module.exports = {
       primaryKey: true,
       required: true,
       email: true, 
-      model: 'person'
     },
     class_bonus_id:
     {
       type: "integer",
       required: true,
-      model: 'classbonus'
+      model: 'classbonus',
     }
   }
 };

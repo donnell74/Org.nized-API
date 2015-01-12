@@ -66,7 +66,7 @@ function get_search_values(values, search_attr)
 }
 
 function login (req, res) {
-
+  console.log("Login for: ", req.body.email); 
   Person.findOneByEmail(req.body.email).exec(function (err, person) {
     if (err)
     {
@@ -223,7 +223,7 @@ module.exports = {
       });
     });
   },
-  findWithExtras: function (req, res) {
+  find: function (req, res) {
     Person.find(req.params.id).populateAll().exec(function (err, rows) {
       PopulateExtras.PopulateAll(rows, function ( result ) {
         res.send(result);
@@ -239,7 +239,7 @@ module.exports = {
         res.send(500, err);
       }
 
-      bcrypt.hash("AITP", salt, function(err, hash) {
+      bcrypt.hash("Aitp2015", salt, function(err, hash) {
         if (err) 
         {
           res.send(500, err);

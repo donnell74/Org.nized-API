@@ -13,6 +13,9 @@ module.exports = {
         res.send(result);
       });        
     });
+  },
+  getByEmail: function (req, res)
+  {
   }
 };
 
