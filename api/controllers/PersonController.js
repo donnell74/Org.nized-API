@@ -68,12 +68,12 @@ function get_search_values(values, search_attr)
 
 function login (req, res) {
   console.log("Login for: ", req.body.email); 
-  Person.findOneByEmail(req.body.email).exec(function (err, person) {
+  Person.findOneByEmail(req.body.email).populateAll().exec(function (err, result) {
     if (err)
     {
-      return res.send(500, { error: "Database error for login" });
+      return res.send(500, err);
     }
-
+    PopulateExtras.PopulateAll(result, function ( person ) {
     if (person)
     {    
       fs.readFile('.salt', 'utf8', function (err, salt) {
@@ -109,7 +109,7 @@ function login (req, res) {
     {
       res.send(404, { error: "Person not found" });
     }
-
+    });
   });
 };
 
@@ -125,7 +125,7 @@ module.exports = {
     });
   },
   GetClassBonusesByPerson: function (req, res) {
-    _GetFirstPerson(req.params.id, function (result) {
+    Person.find(req.params.id, function (result) {
       if ( result != null && result.length != 0 )
       {
         count = 0;
