@@ -5,6 +5,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var bcrypt = require('bcrypt');
+var fs = require('fs');
 
 function _GetFirstPerson(id, cb) {
   Person.find({ email: id }).populateAll()
@@ -233,11 +234,13 @@ module.exports = {
   _GetFirstPerson: _GetFirstPerson,
   login: login,
   resetPassword: function (req, res) {
-    bcrypt.genSalt(10, function(err, salt) {
-      if (err) 
-      {
-        res.send(500, err);
+    fs.readFile('.salt', 'utf8', function (err, salt) {
+      salt = salt.replace(/\n$/, '')
+      if (err) {
+        return console.log(err);
       }
+
+      console.log("Salt: ", salt);
 
       bcrypt.hash("Aitp2015", salt, function(err, hash) {
         if (err) 
