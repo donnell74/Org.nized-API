@@ -75,21 +75,35 @@ function login (req, res) {
     }
 
     if (person)
-    {
-      if ( req.body.password == person.password ) {
-        req.session.person = person.id;
-        delete person.password;
-        res.send(person);
-      }
-      else
-      {
-        if (req.session.person)
-        {
-          req.session.person = null;
+    {    
+      fs.readFile('.salt', 'utf8', function (err, salt) {
+        salt = salt.replace(/\n$/, '')
+        if (err) {
+          return res.send(500, err);
         }
 
-        res.send(400, { error: "Invalid password" });
-      }
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+          if (err) 
+          {
+            return res.send(500, err);
+          }
+        
+          if ( hash == person.password ) {
+            req.session.person = person.id;
+            delete person.password;
+            res.send(person);
+          }
+          else
+          {
+            if (req.session.person)
+            {
+              req.session.person = null;
+            }
+
+            res.send(400, { error: "Invalid password" });
+          }
+        });
+      });
     }
     else
     {
@@ -239,8 +253,6 @@ module.exports = {
       if (err) {
         return console.log(err);
       }
-
-      console.log("Salt: ", salt);
 
       bcrypt.hash("Aitp2015", salt, function(err, hash) {
         if (err) 

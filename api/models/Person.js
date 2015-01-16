@@ -82,6 +82,26 @@ module.exports = {
       via: 'email'
     }, 
   },
+  beforeCreate: function (attrs, next) {
+    var bcrypt = require('bcrypt'),
+        fs     = require('fs');
 
+    fs.readFile('.salt', 'utf8', function (err, salt) {
+      salt = salt.replace(/\n$/, '')
+      if (err) {
+        return next(err);
+      }
+
+      bcrypt.hash(attrs.password, salt, function(err, hash) {
+        if (err) 
+        {
+          return next(err);
+        }
+        
+        attrs.password = hash;
+        next();
+      });
+    });
+  }
 };
 
