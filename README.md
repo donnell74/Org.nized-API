@@ -152,6 +152,9 @@ Same as find but populates nested associations
 Surveys/findWithExtras/<email/cardID>
 Same as find but populates nested associations
 
+Surveys/findCurrent/
+Find all surveys that have started but have not ended.  Pass role_id in params to limit it to only that role_id.
+
 Questions/findWithExtras/<email/cardID>
 Same as find but populates nested associations
 
