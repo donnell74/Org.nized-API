@@ -144,7 +144,9 @@ function _PopulateClassBonuses(reval, nexts, quit)
 
 function _PopulateRoles(reval, nexts, quit)
 {
-  if ( typeof(reval.roles) != "undefined" && reval.roles.length > 0 )
+  if ( typeof(reval) != "undefined" && 
+       typeof(reval.roles) != "undefined" && 
+       reval.roles.length > 0 )
   {
     reval._roles = [];
     var counter = 0;

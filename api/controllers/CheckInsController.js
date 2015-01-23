@@ -36,8 +36,8 @@ module.exports = {
     });
   },
   CheckInPerson: function (req, res) {
-    sails.controllers.person._GetFirstPerson(req.params.id, function (result) {
-      console.log(result);
+    sails.controllers.person._GetFirstPerson(req.param("card_id"), function (result) {
+      console.log("Person: ", result);
       if ( result == null )
       {
         return res.send(false);
@@ -47,7 +47,7 @@ module.exports = {
       {
         CheckIns.create({email: result.email}).exec(function(err, r) {});
         
-        return res.send(true);
+        return res.send(result);
       }
 
       res.send(false);

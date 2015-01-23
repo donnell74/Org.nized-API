@@ -18,7 +18,6 @@ function _GetFirstPerson(id, cb) {
         {
           Person.find({ email: result[0].email }).populateAll()
                 .exec( function(err, card_persons) {
-            console.log(card_persons);
             if (card_persons.length != 0)
             {
               reval = card_persons[0];

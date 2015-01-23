@@ -20,7 +20,8 @@ module.exports = {
       type: 'string',
       required: true,
       primaryKey: true,
-      email: true
+      email: true,
+      model: 'person'
     }, 
     date_scanned:
     {
