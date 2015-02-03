@@ -238,8 +238,9 @@ module.exports = {
     });
   },
   find: function (req, res) {
-    Person.find(req.params.id).populateAll().exec(function (err, rows) {
+    Person.find(req.param("email")).populateAll().exec(function (err, rows) {
       PopulateExtras.PopulateAll(rows, function ( result ) {
+        console.log(result);
         res.send(result);
       });        
     });

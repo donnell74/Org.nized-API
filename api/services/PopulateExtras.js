@@ -16,14 +16,16 @@ function PopulateExtrasException(message) {
 function _PopulatePossibleAnswers(reval, nexts, quit) {
   // add class_bonuses
   set_to_populate = null;
-  if ( typeof(reval.possible_answers) != "undefined" && reval.possible_answers.length > 0 )
-  {
-    set_to_populate = reval.possible_answers;
-  }
+  if ( typeof(reval) != "undefined" ) {
+    if ( typeof(reval.possible_answers) != "undefined" && reval.possible_answers.length > 0 )
+    {
+      set_to_populate = reval.possible_answers;
+    }
 
-  if ( typeof(reval.questions) != "undefined" && reval.questions.length > 0 )
-  {
-    set_to_populate = reval.questions;
+    if ( typeof(reval.questions) != "undefined" && reval.questions.length > 0 )
+    {
+      set_to_populate = reval.questions;
+    }
   }
 
   if (set_to_populate != null) {
@@ -74,7 +76,9 @@ function _PopulatePossibleAnswers(reval, nexts, quit) {
 
 function _PopulateCheckins(reval, nexts, quit) {
   // add checkins
-  if ( typeof(reval.checkins) != "undefined" && reval.checkins.length > 0 )
+  if ( typeof(reval) != "undefined" && 
+       typeof(reval.checkins) != "undefined" && 
+       reval.checkins.length > 0 )
   {
     reval._checkins = [];
     reval.checkins.forEach(function(element) {
@@ -97,7 +101,9 @@ function _PopulateCheckins(reval, nexts, quit) {
 function _PopulateClassBonuses(reval, nexts, quit)
 {
   // add class_bonuses
-  if ( typeof(reval.class_bonuses) != "undefined" && reval.class_bonuses.length > 0 )
+  if ( typeof(reval) != "undefined" &&
+       typeof(reval.class_bonuses) != "undefined" && 
+       reval.class_bonuses.length > 0 )
   {
     reval._class_bonuses = [];
     var counter = 0;

@@ -14,6 +14,7 @@ module.exports = {
       primaryKey: true,
       required: true,
       email: true, 
+      model: 'person'
     },
     class_bonus_id:
     {
