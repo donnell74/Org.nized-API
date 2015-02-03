@@ -245,6 +245,28 @@ module.exports = {
       });        
     });
   }, 
+  findOrCreate: function (req, res) {
+    var _email = req.param("email");
+    var _first_name = req.param("first_name");
+    var _last_name = req.param("last_name");
+    var _password = req.param("password");
+
+    if ( ! _password || ! _email || ! _last_name || ! _first_name ) {
+      res.send(400, "Password, email, last_name, and first_name are required");
+    }
+
+    Person.find(_email).populateAll().exec(function(err, data) { 
+      if (data.length == 0) {
+        Person.create({ email: _email, first_name: _first_name,
+                        last_name: _last_name, password: _password })
+                     .exec(function(err, result) {
+          PopulateExtras.PopulateAll(result, function( output ) { res.send(result) });
+        });
+      } else {
+        res.send(data[0]);
+      }
+    });
+  },
   _GetFirstPerson: _GetFirstPerson,
   login: login,
   resetPassword: function (req, res) {
