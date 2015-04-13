@@ -63,7 +63,9 @@ module.exports = {
         return res.send(result);
       }
 
-      res.send(400, {"code": 2, "error": "User has already been checked in today."});
+      res.send(400, {"code": 2, 
+                     "error": "User has already been checked in today.",
+                     "email": result.email});
     });
   }, 
   GetCheckInsByDate: function (req, res) {
