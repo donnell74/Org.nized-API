@@ -111,7 +111,6 @@ function _PopulateClassBonuses(reval, nexts, quit)
       ClassBonus.find({where: {id: element.class_bonus_id}}).exec(function (err, bonus) {
         if ( bonus.length != 0 ) 
         {
-          delete bonus[0].id;
           delete bonus[0].createdAt;
           delete bonus[0].updatedAt;
           reval._class_bonuses.push(bonus[0]);
