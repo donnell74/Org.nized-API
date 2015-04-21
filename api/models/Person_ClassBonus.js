@@ -21,6 +21,7 @@ module.exports = {
       type: "integer",
       required: true,
       model: 'classbonus',
+      via: 'id'
     }
   }
 };
