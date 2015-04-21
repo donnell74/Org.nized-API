@@ -113,6 +113,7 @@ function _PopulateClassBonuses(reval, nexts, quit)
         {
           delete bonus[0].createdAt;
           delete bonus[0].updatedAt;
+          bonus[0].class_bonus_id = element.class_bonus_id;
           reval._class_bonuses.push(bonus[0]);
         }
     
