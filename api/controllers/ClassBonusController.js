@@ -39,5 +39,16 @@ module.exports = {
       });
     });
   },
+  createIfNotExists: function(req, res) {
+    var cbParams = req.allParams();
+    delete cbParams.id;
+    ClassBonus.findOrCreate(cbParams, cbParams).exec(function(err, record) {
+      if (err) {
+        return res.send(400, err);
+      }
+
+      return res.send(record);
+    });
+  },
 };
 
