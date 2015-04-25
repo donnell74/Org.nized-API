@@ -296,5 +296,43 @@ module.exports = {
 
     });
   }, 
+  changePassword: function (req, res) {
+    fs.readFile('.salt', 'utf8', function (err, salt) {
+      salt = salt.replace(/\n$/, '')
+      if (err) {
+        return res.send(err);
+      }
+
+      var email = req.param("email");
+      var oldPass = req.param("old_password");
+      var newPass = req.param("new_password");
+
+      if ( email == null || oldPass == null || newPass == null) {
+        return res.send(400, {"error": "email, old_password, and new_password are required"});
+      }
+
+      bcrypt.hash(oldPass, salt, function(err, oldHash) {
+        if (err) 
+        {
+          res.send(500, err);
+        }
+        
+        bcrypt.hash(newPass, salt, function(err, newHash) {
+          Person.update({email: email, password: oldHash}, 
+                        {password: newHash}).exec(function (err, newPerson) {
+            if (err)
+            {
+              res.send(500, err);
+            }
+            else
+            {
+              res.send(newPerson);
+            }
+          });
+        });
+      });
+
+    });
+  },
 };
 
