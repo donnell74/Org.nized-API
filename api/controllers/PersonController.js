@@ -6,9 +6,38 @@
  */
 var bcrypt = require('bcrypt');
 var fs = require('fs');
+var async = require('async');
+
+var domainShortcuts = {
+  "@msu": "@live.missouristate.edu",
+  "@_msu": "@missouristate.edu"
+};
+
+function _ReplaceDomainShortcuts(email, callBack) {
+  if ( ! email ) {
+    return "";
+  }
+
+  async.each(
+    Object.keys(domainShortcuts),
+    function(key, callb) {
+      email = email.replace(new RegExp(key, "gi"), domainShortcuts[key]);
+      console.log(email);
+      callb();
+    },
+    function(err) {
+      if (err) {
+        return res.send(500, {"error": err});
+      }
+      callBack(email);
+    }
+  );
+};
 
 function _GetFirstPerson(id, cb) {
-  Person.find({ email: id }).populateAll()
+  _ReplaceDomainShortcuts(id, 
+  function(_email) {
+  Person.find({ email: _email }).populateAll()
         .exec(function(err, persons){
     reval = null;
     if (persons.length == 0)
@@ -40,6 +69,7 @@ function _GetFirstPerson(id, cb) {
       delete reval.password;
       PopulateExtras.PopulateAll(reval, cb);
     }
+  })
   });
 }
 
@@ -66,65 +96,73 @@ function get_search_values(values, search_attr)
 }
 
 function login (req, res) {
-  console.log("Login for: ", req.body.email); 
-  Person.findOneByEmail(req.body.email).populateAll().exec(function (err, result) {
-    if (err)
-    {
-      return res.send(500, err);
-    }
-    PopulateExtras.PopulateAll(result, function ( person ) {
-    if (person)
-    {    
-      fs.readFile('.salt', 'utf8', function (err, salt) {
-        salt = salt.replace(/\n$/, '')
-        if (err) {
-          return res.send(500, err);
-        }
+  _ReplaceDomainShortcuts(req.param("email"),
+	function(_email) {
+	  Person.findOneByEmail(_email).populateAll().exec(function (err, result) {
+	    if (err)
+	    {
+	      return res.send(500, {"error": err});
+	    }
 
-        bcrypt.hash(req.body.password, salt, function(err, hash) {
-          if (err) 
-          {
-            return res.send(500, err);
-          }
-        
-          if ( hash == person.password ) {
-            req.session.person = person.id;
-            delete person.password;
-            res.send(person);
-          }
-          else
-          {
-            if (req.session.person)
-            {
-              req.session.person = null;
-            }
+	    PopulateExtras.PopulateAll(result, function ( person ) {
+	    if (person)
+	    {    
+	      fs.readFile('.salt', 'utf8', function (err, salt) {
+		salt = salt.replace(/\n$/, '')
+		if (err) {
+		  return res.send(500, {"error": "Password not provided"});
+		}
 
-            res.send(400, { error: "Invalid password" });
-          }
-        });
-      });
-    }
-    else
-    {
-      res.send(404, { error: "Person not found" });
-    }
-    });
+		bcrypt.hash(req.param("password"), salt, function(err, hash) {
+		  if (err) 
+		  {
+		    return res.send(500, {"error": err});
+		  }
+		
+		  if ( hash == person.password ) {
+		    req.session.person = person.id;
+		    delete person.password;
+		    res.send(person);
+		  }
+		  else
+		  {
+		    if (req.session.person)
+		    {
+		      req.session.person = null;
+		    }
+
+		    res.send(400, { error: "Invalid password" });
+		  }
+		});
+	      });
+	    }
+	    else
+	    {
+	      res.send(404, { error: "Person not found" });
+	    }
+	  });
+     });
   });
 };
 
 module.exports = {
   CheckIfUserExist: function (req, res) {
-    _GetFirstPerson(req.params.id, function (result) { 
+    _email = req.param("email") || req.params.id || ""
+    _GetFirstPerson(_email, function (result) { 
       res.send( result != null ); 
     });
   },
   GetFirstPerson: function (req, res) {
-    _GetFirstPerson(req.params.id, function (result) {
+    _email = req.param("email") || req.params.id || ""
+    _GetFirstPerson(_email, function (result) {
       res.send( result );
     });
   },
   GetClassBonusesByPerson: function (req, res) {
-    Person.find(req.params.id, function (result) {
+    _email = req.param("email") || req.params.id || ""
+    _ReplaceDomainShortcuts(_email,
+      function(_email) {
+    Person.find(_email, function (result) {
       if ( result != null && result.length != 0 )
       {
         count = 0;
@@ -147,6 +185,7 @@ module.exports = {
       {
         res.send( result ); 
       }
+    });
     });
   }, 
   UpdateEmail: function (req, res) {
@@ -223,7 +262,8 @@ module.exports = {
     }
   }, 
   DeletePerson: function (req, res) {
-    _GetFirstPerson(req.params.id, function (result) {
+    _email = req.param("email") || req.params.id || ""
+    _GetFirstPerson(_email, function (result) {
       if (reval == null)
       {
         return res.send(400, { error: "Could not find user" } );
@@ -238,11 +278,13 @@ module.exports = {
     });
   },
   find: function (req, res) {
-    Person.find(req.param("email")).populateAll().exec(function (err, rows) {
-      PopulateExtras.PopulateAll(rows, function ( result ) {
-        console.log(result);
-        res.send(result);
-      });        
+    _email = req.param("email") || req.params.id || ""
+    _ReplaceDomainShortcuts(_email, function(newEmail) {
+      Person.find(newEmail).populateAll().exec(function (err, rows) {
+        PopulateExtras.PopulateAll(rows, function ( result ) {
+          res.send(result);
+        });        
+      });
     });
   }, 
   findOrCreate: function (req, res) {
@@ -282,21 +324,25 @@ module.exports = {
           res.send(500, err);
         }
         
-        Person.update({email: req.params.id}).set({password: hash}).exec(function (err, newPerson) {
-          if (err)
-          {
-            res.send(500, err);
-          }
-          else
-          {
-            res.send(newPerson);
-          }
+	_email = req.param("email") || req.params.id || ""
+        _ReplaceDomainShortcuts(_email, function(newEmail) {
+          Person.update({email: newEmail}).set({password: hash}).exec(function (err, newPerson) {
+            if (err)
+            {
+              res.send(500, err);
+            }
+            else
+            {
+              res.send(newPerson);
+            }
+          });
         });
       });
 
     });
   }, 
   changePassword: function (req, res) {
+    console.log(req.allParams());
     fs.readFile('.salt', 'utf8', function (err, salt) {
       salt = salt.replace(/\n$/, '')
       if (err) {
