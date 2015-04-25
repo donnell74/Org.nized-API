@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing Checkins
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+async = require("async");
 
 function _HasCheckInForToday(person)
 {
@@ -104,5 +105,25 @@ module.exports = {
       res.send( { 'count': result } );
     });
   },
+  GetAllCheckinDates: function(req, res) {
+    CheckIns.find().exec( function (err, results) {
+      var reVal = [];
+      async.each(results,
+        function(item, callback) {
+          day = new Date(item.date_scanned);
+          // yyyy-mm-dd
+          dayString = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
+          if ( reVal.indexOf(dayString) == -1 ) {
+            reVal.push(dayString);
+          } 
+
+          callback();
+        },
+        function(err) {
+          res.send(reVal);
+        }
+      );
+    });
+  }
 };
 

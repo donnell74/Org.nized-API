@@ -14,8 +14,8 @@ var domainShortcuts = {
 };
 
 function _ReplaceDomainShortcuts(email, callBack) {
-  if ( ! email ) {
-    return "";
+  if ( ! email || typeof email == 'undefined') {
+    return callBack(email);
   }
 
   async.each(
@@ -278,7 +278,7 @@ module.exports = {
     });
   },
   find: function (req, res) {
-    _email = req.param("email") || req.params.id || ""
+    _email = req.param("email") || req.params.id || undefined
     _ReplaceDomainShortcuts(_email, function(newEmail) {
       Person.find(newEmail).populateAll().exec(function (err, rows) {
         PopulateExtras.PopulateAll(rows, function ( result ) {
@@ -324,7 +324,7 @@ module.exports = {
           res.send(500, err);
         }
         
-	_email = req.param("email") || req.params.id || ""
+	_email = req.param("email") || req.params.id || undefined
         _ReplaceDomainShortcuts(_email, function(newEmail) {
           Person.update({email: newEmail}).set({password: hash}).exec(function (err, newPerson) {
             if (err)
