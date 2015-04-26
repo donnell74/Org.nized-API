@@ -112,7 +112,7 @@ module.exports = {
         function(item, callback) {
           day = new Date(item.date_scanned);
           // yyyy-mm-dd
-          dayString = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
+          dayString = day.toISOString().split("T")[0];
           if ( reVal.indexOf(dayString) == -1 ) {
             reVal.push(dayString);
           } 
