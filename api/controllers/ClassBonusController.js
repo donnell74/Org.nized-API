@@ -7,25 +7,9 @@
 
 module.exports = {
   GetPersonsByClassBonus: function(req, res) {
-    var nowDate = new Date();
-    var nowSemester = "";
-    if ( nowDate.month < 6 )
-    {
-      nowSemester += "SP";
-    }
-    else if ( nowDate.month < 8 )
-    {
-      nowSemester += "SU";
-    }
-    else
-    {
-      nowSemester += "FA";
-    }
-
-    nowSemester += nowDate.getFullYear();
-
-    code = req.params.id;
-    ClassBonus.find( { where: { course_code: code, semester: nowSemester } } )
+    _code = req.param("course_code");
+    _semester = req.param("semester");
+    ClassBonus.find( { where: { course_code: _code, semester: _semester } } )
               .exec( function ( err, bonuses ) {
       if ( bonuses.length == 0 )
       {

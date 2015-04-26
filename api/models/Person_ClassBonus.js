@@ -19,9 +19,7 @@ module.exports = {
     class_bonus_id:
     {
       type: "integer",
-      required: true,
-      model: 'classbonus',
-      via: 'id'
+      required: true
     }
   }
 };
