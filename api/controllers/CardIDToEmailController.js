@@ -12,7 +12,7 @@ module.exports = {
     if ( ! _card_id || ! _email ) {
       res.send(400, "card_id and email are required");
     }
-    _ReplaceDomainShortcuts(_email
+    _ReplaceDomainShortcuts(_email,
     function(newEmail) {
       CardIDToEmail.find(_card_id).exec(function(err, data) { 
         if (data.length == 0)
