@@ -12,16 +12,19 @@ module.exports = {
     if ( ! _card_id || ! _email ) {
       res.send(400, "card_id and email are required");
     }
-    CardIDToEmail.find(_card_id).exec(function(err, data) { 
-      if (data.length == 0)
-      {
-        CardIDToEmail.create({ card_id: _card_id, email: _email })
-                     .exec(function(err, result) {
-          res.send(result);
-        });
-      } else {
-        res.send(data[0]);
-      }
+    _ReplaceDomainShortcuts(_email
+    function(newEmail) {
+      CardIDToEmail.find(_card_id).exec(function(err, data) { 
+        if (data.length == 0)
+        {
+          CardIDToEmail.create({ card_id: _card_id, email: newEmail })
+                       .exec(function(err, result) {
+            res.send(result);
+          });
+        } else {
+          res.send(data[0]);
+        }
+      });
     });
   },
   destroy: function (req, res) {
