@@ -14,7 +14,6 @@ module.exports = {
       primaryKey: true,
       unique: true,
       autoIncrement: true,
-      required: true
     }, 
     role_id:
     {
