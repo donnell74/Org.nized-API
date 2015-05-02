@@ -44,6 +44,11 @@ module.exports = {
     {
       collection: "surveys_roles",
       via: "survey_id"
+    },
+    openToNonMembers:
+    {
+      type: "boolean",
+      defaultsTo: false
     }
   }
 };

@@ -14,7 +14,8 @@ module.exports = {
       primaryKey: true,
       required: true,
       email: true,
-      unique: true
+      unique: true,
+      lowercase: true
     },
     password:
     {
