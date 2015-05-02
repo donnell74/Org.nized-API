@@ -14,15 +14,18 @@ module.exports = {
       primaryKey: true,
       unique: true,
       autoIncrement: true,
+      required: true
     }, 
-    id:
+    role_id:
     {
       type: "integer",
+      required: true
     }, 
     model:
     {
       type: "string",
-      lowercase: true
+      lowercase: true,
+      required: true
     },
     self:
     {

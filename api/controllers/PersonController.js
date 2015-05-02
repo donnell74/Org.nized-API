@@ -9,7 +9,7 @@ var fs = require('fs');
 var async = require('async');
 
 function _GetFirstPerson(id, cb) {
-  _ReplaceDomainShortcuts(id, 
+  DomainShortcuts.Replace(id, 
   function(_email) {
   Person.find({ email: _email }).populateAll()
         .exec(function(err, persons){
@@ -70,7 +70,7 @@ function get_search_values(values, search_attr)
 }
 
 function login (req, res) {
-  _ReplaceDomainShortcuts(req.param("email"),
+  DomainShortcuts.Replace(req.param("email"),
 	function(_email) {
 	  Person.findOneByEmail(_email).populateAll().exec(function (err, result) {
 	    if (err)
@@ -134,7 +134,7 @@ module.exports = {
   },
   GetClassBonusesByPerson: function (req, res) {
     _email = req.param("email") || req.params.id || ""
-    _ReplaceDomainShortcuts(_email,
+    DomainShortcuts.Replace(_email,
       function(_email) {
     Person.find(_email, function (result) {
       if ( result != null && result.length != 0 )
@@ -253,7 +253,7 @@ module.exports = {
   },
   find: function (req, res) {
     _email = req.param("email") || req.params.id || undefined
-    _ReplaceDomainShortcuts(_email, function(newEmail) {
+    DomainShortcuts.Replace(_email, function(newEmail) {
       Person.find(newEmail).populateAll().exec(function (err, rows) {
         PopulateExtras.PopulateAll(rows, function ( result ) {
           res.send(result);
@@ -299,7 +299,7 @@ module.exports = {
         }
         
 	_email = req.param("email") || req.params.id || undefined
-        _ReplaceDomainShortcuts(_email, function(newEmail) {
+        DomainShortcuts.Replace(_email, function(newEmail) {
           Person.update({email: newEmail}).set({password: hash}).exec(function (err, newPerson) {
             if (err)
             {

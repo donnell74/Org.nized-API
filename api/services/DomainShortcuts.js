@@ -5,7 +5,8 @@ var domainShortcuts = {
   "@_msu": "@missouristate.edu"
 };
 
-function _ReplaceDomainShortcuts(email, callBack) {
+module.exports = {
+Replace: function(email, callBack) {
   if ( ! email || typeof email == 'undefined') {
     return callBack(email);
   }
@@ -24,6 +25,5 @@ function _ReplaceDomainShortcuts(email, callBack) {
       callBack(email);
     }
   );
+}
 };
-
-
