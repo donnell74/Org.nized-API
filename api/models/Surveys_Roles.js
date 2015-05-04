@@ -11,8 +11,8 @@ module.exports = {
     survey_id:
     {
       type: "integer",
-      primaryKey: true,
       required: true,
+      primaryKey: true,
       model: 'surveys'
     },
     role_id:

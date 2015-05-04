@@ -19,6 +19,7 @@ module.exports = {
     {
       type: "integer",
       required: true,
+      model: "surveys"
     },
     question_text:
     {
