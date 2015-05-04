@@ -8,6 +8,12 @@
 module.exports = {
 
   attributes: {
+    id:
+    {
+      type: "integer",
+      primaryKey: true,
+      autoIncrement: true
+    },
     question_id:
     {
       type: "integer",
@@ -16,6 +22,12 @@ module.exports = {
     text:
     {
       type: "string",
+      required: true
+    },
+    email:
+    {
+      type: "string",
+      model: "person",
       required: true
     }
   }

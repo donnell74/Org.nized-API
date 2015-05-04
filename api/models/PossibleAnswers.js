@@ -18,7 +18,8 @@ module.exports = {
     question_id:
     {
       type: "integer",
-      required: true
+      required: true,
+      model: "questions"
     },
     text:
     {
